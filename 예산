@@ -1,0 +1,27 @@
+n = int(input())
+arr = list(map(int , input().split()))
+m = int(input())
+max_v = max(arr)
+min_v = 1
+
+def 가능(arr , a , m):
+    s = 0
+    for i in arr:
+        if i >= a:
+            s += a
+        else :
+            s += i
+    return m >= s
+
+result = 0
+if sum(arr) <= m:
+    print(max_v)
+else:
+    while max_v >= min_v :
+        answer = (max_v + min_v) // 2
+        if 가능(arr , answer , m):
+            min_v = answer +1
+            result = answer
+        else:
+            max_v = answer -1
+    print(result)
