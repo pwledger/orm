@@ -1,0 +1,31 @@
+import sys
+
+M, N, L = map(int, sys.stdin.readline().split())
+shoot_pos = list(map(int,sys.stdin.readline().split())) # 사대 입력 받음
+shoot_pos.sort() # 이진 탐색 대상이 사대 이므로, 오름차순으로 정렬
+
+# 동물들의 위치 저장
+animal_pos = [list(map(int, sys.stdin.readline().split())) for _ in range(N)]
+
+result = 0
+# 각 동물들의 위치에서 사대를 탐색한다.
+# 사격 범위 |x - a| + b <= L 에 해당될 경우 해당 동물에 대해서 result += 1을 진행하고,
+# 카운트를 했으므로, 해당 동물에 대한 사대의 이진 탐색을 종료한다.
+for a, b in animal_pos:
+    lt = 0 # 사대 시작 인덱스
+    rt = len(shoot_pos) - 1 # 사대 끝 인덱스
+    forward_range = a + b - L # 해당 동물을 잡을 수 있는 범위의 최솟값
+    behind_range = a - b + L # 해당 동물을 잡을 수 있는 범위의 최댓값
+
+    while lt <= rt:
+        mid = (lt + rt) // 2
+        # 탐색중인 사대의 위치가 동물을 잡을 수 있는 사대 범위에 포함된다면 카운트
+        if forward_range <= shoot_pos[mid] <= behind_range:
+            result += 1
+            break
+        elif forward_range > shoot_pos[mid]:
+            lt = mid + 1
+        elif behind_range < shoot_pos[mid]:
+            rt = mid - 1
+
+print(result)
